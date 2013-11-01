@@ -1,4 +1,3 @@
-import re
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 
@@ -121,6 +120,7 @@ urlpatterns += patterns(
     url(r'(?ix)^import/{}$'.format(parsers.URL_RE_SOURCE), 'import_handler'),
     url(r'(?ix)^import_status/{}/(?P<filename>.+)$'.format(parsers.URL_RE_SOURCE), 'import_status_handler'),
     url(r'(?ix)^export/{}$'.format(parsers.URL_RE_SOURCE), 'export_handler'),
+    url(r'(?ix)^xblock/{}$'.format(parsers.URL_RE_SOURCE), 'xblock_handler'),
 )
 
 js_info_dict = {

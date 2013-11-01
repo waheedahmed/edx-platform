@@ -233,7 +233,8 @@ function createNewUnit(e) {
     $.postJSON('/create_item', {
         'parent_location': parent,
         'category': category,
-        'display_name': 'New Unit'
+        'display_name': 'New Unit',
+        'published': false
     },
 
     function(data) {
@@ -279,15 +280,19 @@ function _deleteItem($el, type) {
                     });
                     deleting.show();
 
-                    $.postJSON('/delete_item',
-                           {'id': id,
+                    $.ajax({
+                        type: 'DELETE',
+                        url: $el.data('update_url'),
+                        contentType: 'application/json',
+                        data: JSON.stringify({
                             'delete_children': true,
-                            'delete_all_versions': true},
-                           function(data) {
-                               $el.remove();
-                               deleting.hide();
-                           }
-                          );
+                            'delete_all_versions': true
+                        }),
+                        success: function () {
+                            $el.remove();
+                            deleting.hide();
+                        }
+                    });
                 }
             },
             secondary: {

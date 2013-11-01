@@ -1542,6 +1542,7 @@ class ContentStoreTest(ModuleStoreTestCase):
             'parent_location': 'i4x://MITx/999/course/Robot_Super_Course',
             'category': 'chapter',
             'display_name': 'Section One',
+            'published': True
         }
 
         resp = self.client.ajax_post(reverse('create_item'), section_data)
@@ -1559,7 +1560,8 @@ class ContentStoreTest(ModuleStoreTestCase):
 
         problem_data = {
             'parent_location': 'i4x://MITx/999/course/Robot_Super_Course',
-            'category': 'problem'
+            'category': 'problem',
+            'published': False
         }
 
         resp = self.client.ajax_post(reverse('create_item'), problem_data)

@@ -22,7 +22,8 @@ class DeleteItem(CourseTestCase):
         # Add static tab
         data = json.dumps({
             'parent_location': 'i4x://mitX/333/course/Dummy_Course',
-            'category': 'static_tab'
+            'category': 'static_tab',
+            'published': True
         })
 
         resp = self.client.post(
@@ -64,7 +65,8 @@ class TestCreateItem(CourseTestCase):
             json.dumps({
                 'parent_location': self.course.location.url(),
                 'display_name': display_name,
-                'category': 'chapter'
+                'category': 'chapter',
+                'published': True
             }),
             content_type="application/json"
         )
@@ -87,7 +89,8 @@ class TestCreateItem(CourseTestCase):
             reverse('create_item'),
             json.dumps({
                 'parent_location': chap_location,
-                'category': 'vertical'
+                'category': 'vertical',
+                'published': True
             }),
             content_type="application/json"
         )
@@ -102,7 +105,8 @@ class TestCreateItem(CourseTestCase):
             json.dumps({
                 'parent_location': vert_location,
                 'category': 'problem',
-                'boilerplate': template_id
+                'boilerplate': template_id,
+                'published': False
             }),
             content_type="application/json"
         )
@@ -127,7 +131,8 @@ class TestCreateItem(CourseTestCase):
             json.dumps(
                 {'parent_location': self.course.location.url(),
                  'category': 'problem',
-                 'boilerplate': 'nosuchboilerplate.yaml'
+                 'boilerplate': 'nosuchboilerplate.yaml',
+                 'published': False
                  }),
             content_type="application/json"
         )
@@ -156,7 +161,8 @@ class TestEditItem(CourseTestCase):
             json.dumps(
                 {'parent_location': self.course.location.url(),
                  'display_name': display_name,
-                 'category': 'chapter'
+                 'category': 'chapter',
+                 'published': True
                  }),
             content_type="application/json"
         )
@@ -166,6 +172,7 @@ class TestEditItem(CourseTestCase):
             json.dumps({
                 'parent_location': chap_location,
                 'category': 'sequential',
+                'published': True
             }),
             content_type="application/json"
         )
@@ -178,6 +185,7 @@ class TestEditItem(CourseTestCase):
                 'parent_location': self.seq_location,
                 'category': 'problem',
                 'boilerplate': template_id,
+                'published': False
             }),
             content_type="application/json"
         )

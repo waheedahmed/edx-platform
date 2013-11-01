@@ -16,6 +16,7 @@ from mitxmako.shortcuts import render_to_response
 from xmodule.modulestore import Location
 from xmodule.modulestore.django import modulestore
 from xmodule.util.date_utils import get_default_time_display
+from xmodule.modulestore.django import loc_mapper
 
 from xblock.fields import Scope
 from util.json_request import expect_json, JsonResponse
@@ -174,6 +175,11 @@ def edit_unit(request, location):
             course_id=course.location.course_id
     )
 
+    unit_state = compute_unit_state(item)
+    unit_update_url = loc_mapper().translate_location(
+        course.location.course_id, Location(location), unit_state=='public', True
+    ).url_reverse("xblock", "")
+
     component_templates = defaultdict(list)
     for category in COMPONENT_TYPES:
         component_class = load_mixed_class(category)
@@ -238,9 +244,13 @@ def edit_unit(request, location):
         )
 
     components = [
-        component.location.url()
-        for component
-        in item.get_children()
+    [component.location.url(),
+     loc_mapper().translate_location(
+         course.location.course_id, component.location, unit_state == 'public', True
+     ).url_reverse("xblock", "")
+    ]
+    for component
+    in item.get_children()
     ]
 
     # TODO (cpennington): If we share units between courses,
@@ -283,12 +293,12 @@ def edit_unit(request, location):
             index=index
         )
 
-    unit_state = compute_unit_state(item)
 
     return render_to_response('unit.html', {
         'context_course': course,
         'unit': item,
         'unit_location': location,
+        'unit_update_url': unit_update_url,
         'components': components,
         'component_templates': component_templates,
         'draft_preview_link': preview_lms_link,
