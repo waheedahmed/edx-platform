@@ -30,6 +30,14 @@
         expect($('.video-controls').find('.vidtime')).toHaveText('0:00 / 0:00');
       });
 
+      it('add ARIA attributes to time control', function () {
+        var timeControl = $('div.slider>a');
+        expect(timeControl).toHaveAttr('role', 'slider');
+        expect(timeControl).toHaveAttr('title', 'video position');
+        expect(timeControl).toHaveAttr('aria-disabled', 'false');
+        expect(timeControl).toHaveAttr('aria-valuetext');  
+      });
+
       it('add ARIA attributes to play control', function () {
         var playControl = $('ul.vcr a');
         expect(playControl).toHaveAttr('role', 'button');
