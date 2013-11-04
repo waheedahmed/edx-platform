@@ -22,8 +22,7 @@
     });
 
     describe('constructor', function() {
-      var oldYT = window.YT,
-      SELECTOR = 'a.quality_control';
+      var oldYT = window.YT;
 
       beforeEach(function() {
         window.YT = {
@@ -41,18 +40,19 @@
 
       it('render the quality control', function() {
         var container = videoControl.secondaryControlsEl;
-        expect(container).toContain(SELECTOR);
+        expect(container).toContain('a.quality_control');
       });
 
       it('add ARIA attributes to quality control', function () {
-        expect($(SELECTOR)).toHaveAttr('role', 'button');
-        expect($(SELECTOR)).toHaveAttr('title', 'HD off');  
-        expect($(SELECTOR)).toHaveAttr('aria-disabled', 'false');  
+        var qualityControl = $('a.quality_control');
+        expect(qualityControl).toHaveAttr('role', 'button');
+        expect(qualityControl).toHaveAttr('title', 'HD off');  
+        expect(qualityControl).toHaveAttr('aria-disabled', 'false');  
       });
 
       it('bind the quality control', function() {
         var handler = videoQualityControl.toggleQuality;
-        expect($(SELECTOR)).toHandleWith('click', handler);
+        expect($('a.quality_control')).toHandleWith('click', handler);
       });
     });
   });

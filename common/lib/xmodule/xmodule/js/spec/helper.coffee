@@ -144,6 +144,14 @@ jasmine.stubVideoPlayer = (context, enableParts, html5=false) ->
   jasmine.stubYoutubePlayer()
   return new Video '#example', '.75:7tqY6eQzVhE,1.0:cogebirgzzM'
 
+jasmine.toHaveAttrs = (attrs) ->
+  obj = this.actual
+  result = true
+  if $.isEmptyObject attrs
+    return false
+  $.each attrs, (name, value) ->
+    result = result && if obj.attr(name) == value then true else false
+  return result
 
 # Stub jQuery.cookie
 $.cookie = jasmine.createSpy('jQuery.cookie').andReturn '1.0'

@@ -31,7 +31,9 @@
 
           toBeInArray: function(arr) {
             return $.inArray(this.actual, arr) === -1 ? false : true;
-          }
+          },
+
+          toHaveAttrs: jasmine.toHaveAttrs
         });
       });
 
@@ -57,15 +59,18 @@
 
       it('add ARIA attributes to slider handle', function () {
         var sliderHandle = $('div.volume-slider>a.ui-slider-handle'),
-        arr = ['muted', 'very low', 'low', 'average', 'loud', 'very loud',
-               'maximum'];
-        expect(sliderHandle).toHaveAttr('role', 'slider');
-        expect(sliderHandle).toHaveAttr('title', 'volume');  
-        expect(sliderHandle).toHaveAttr('aria-disabled', 'false');
-        expect(sliderHandle).toHaveAttr( 'aria-valuemin', '0');
-        expect(sliderHandle).toHaveAttr( 'aria-valuemax', '100');
+          arr = ['muted', 'very low', 'low', 'average', 'loud', 'very loud',
+                 'maximum'];
+        expect(sliderHandle).toHaveAttrs({
+          'role': 'slider',
+          'title': 'volume',
+          'aria-disabled': 'false',
+          'aria-valuemin': '0',
+          'aria-valuemax': '100'
+        });
         expect(sliderHandle.attr('aria-valuenow')).toBeInRange(0, 100);
         expect(sliderHandle.attr('aria-valuetext')).toBeInArray(arr);
+        
       });
  
       it('add ARIA attributes to volume control', function () {
@@ -107,7 +112,6 @@
       });
 
       describe('when the new volume is 0', function() {
-        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
         beforeEach(function() {
           videoVolumeControl.onChange(void 0, {
             value: 0
@@ -121,101 +125,60 @@
         it('add muted class', function() {
           expect($('.volume')).toHaveClass('muted');
         });
-
-        it('changes ARIA attributes', function () {
-          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
-          expect(sliderHandle.attr('aria-valuenow')).toBe('0');
-          expect(sliderHandle.attr('aria-valuetext')).toBe('muted');
-        });
       });
 
-      describe('when the new volume is in ]0,20]', function() {
-        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
-        beforeEach(function() {
-          videoVolumeControl.onChange(void 0, {
-            value: 10
+      var initialData = [
+        {
+          range: 'muted',
+          value: 0,
+          expectation: 'muted' 
+        },
+        {
+          range: 'in ]0,20]',
+          value: 10,
+          expectation: 'very low' 
+        },
+        {
+          range: 'in ]20,40]',
+          value: 30,
+          expectation: 'low' 
+        },
+        {
+          range: 'in ]40,60]',
+          value: 50,
+          expectation: 'average' 
+        },
+        {
+          range: 'in ]60,80]',
+          value: 70,
+          expectation: 'loud' 
+        },
+        {
+          range: 'in ]80,100[',
+          value: 90,
+          expectation: 'very loud' 
+        },
+        {
+          range: 'maximum',
+          value: 100,
+          expectation: 'maximum' 
+        } 
+      ];
+
+      $.each(initialData, function(index, data) {
+        describe('when the new volume is ' + data.range, function() {
+          beforeEach(function() {
+            videoVolumeControl.onChange(void 0, {
+              value: data.value
+            });
           });
-        });
-
-        it('changes ARIA attributes', function () {
-          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
-          expect(sliderHandle.attr('aria-valuenow')).toBe('10');
-          expect(sliderHandle.attr('aria-valuetext')).toBe('very low');
-        });
-      });
-
-      describe('when the new volume is in ]20,40]', function() {
-        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
-        beforeEach(function() {
-          videoVolumeControl.onChange(void 0, {
-            value: 30
+      
+          it('changes ARIA attributes', function () {
+            var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
+            expect(sliderHandle).toHaveAttr('aria-valuenow',
+                                            data.value.toString(10));
+            expect(sliderHandle).toHaveAttr('aria-valuetext', data.expectation);
           });
-        });
-
-        it('changes ARIA attributes', function () {
-          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
-          expect(sliderHandle.attr('aria-valuenow')).toBe('30');
-          expect(sliderHandle.attr('aria-valuetext')).toBe('low');
-        });
-      });
-
-      describe('when the new volume is in ]40,60]', function() {
-        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
-        beforeEach(function() {
-          videoVolumeControl.onChange(void 0, {
-            value: 50
-          });
-        });
-
-        it('changes ARIA attributes', function () {
-          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
-          expect(sliderHandle.attr('aria-valuenow')).toBe('50');
-          expect(sliderHandle.attr('aria-valuetext')).toBe('average');
-        });
-      });
-
-      describe('when the new volume is in ]60,80]', function() {
-        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
-        beforeEach(function() {
-          videoVolumeControl.onChange(void 0, {
-            value: 70
-          });
-        });
-
-        it('changes ARIA attributes', function () {
-          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
-          expect(sliderHandle.attr('aria-valuenow')).toBe('70');
-          expect(sliderHandle.attr('aria-valuetext')).toBe('loud');
-        });
-      });
-
-      describe('when the new volume is in ]80,100[', function() {
-        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
-        beforeEach(function() {
-          videoVolumeControl.onChange(void 0, {
-            value: 90
-          });
-        });
-
-        it('changes ARIA attributes', function () {
-          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
-          expect(sliderHandle.attr('aria-valuenow')).toBe('90');
-          expect(sliderHandle.attr('aria-valuetext')).toBe('very loud');
-        });
-      });
-
-      describe('when the new volume is maximum', function() {
-        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
-        beforeEach(function() {
-          videoVolumeControl.onChange(void 0, {
-            value: 100
-          });
-        });
-
-        it('changes ARIA attributes', function () {
-          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
-          expect(sliderHandle.attr('aria-valuenow')).toBe('100');
-          expect(sliderHandle.attr('aria-valuetext')).toBe('maximum');
         });
       });
     });
