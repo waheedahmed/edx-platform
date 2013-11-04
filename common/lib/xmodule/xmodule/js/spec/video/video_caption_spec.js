@@ -647,6 +647,11 @@
                 it('hide the caption', function () {
                     expect(state.el).toHaveClass('closed');
                 });
+
+                it('changes ARIA attribute of caption control', function () {
+                    expect($('a.hide-subtitles'))
+                        .toHaveAttr('title', 'Turn on captions');
+                });
             });
 
             describe('when the caption is hidden', function () {
@@ -668,6 +673,11 @@
 
                 it('show the caption', function () {
                     expect(state.el).not.toHaveClass('closed');
+                });
+
+                it('changes ARIA attribute of caption control', function () {
+                    expect($('a.hide-subtitles'))
+                        .toHaveAttr('title', 'Turn off captions');
                 });
 
                 // Test turned off due to flakiness (30.10.2013).

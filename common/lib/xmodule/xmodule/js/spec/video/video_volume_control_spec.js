@@ -107,6 +107,7 @@
       });
 
       describe('when the new volume is 0', function() {
+        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
         beforeEach(function() {
           videoVolumeControl.onChange(void 0, {
             value: 0
@@ -119,6 +120,102 @@
 
         it('add muted class', function() {
           expect($('.volume')).toHaveClass('muted');
+        });
+
+        it('changes ARIA attributes', function () {
+          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
+          expect(sliderHandle.attr('aria-valuenow')).toBe('0');
+          expect(sliderHandle.attr('aria-valuetext')).toBe('muted');
+        });
+      });
+
+      describe('when the new volume is in ]0,20]', function() {
+        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
+        beforeEach(function() {
+          videoVolumeControl.onChange(void 0, {
+            value: 10
+          });
+        });
+
+        it('changes ARIA attributes', function () {
+          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
+          expect(sliderHandle.attr('aria-valuenow')).toBe('10');
+          expect(sliderHandle.attr('aria-valuetext')).toBe('very low');
+        });
+      });
+
+      describe('when the new volume is in ]20,40]', function() {
+        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
+        beforeEach(function() {
+          videoVolumeControl.onChange(void 0, {
+            value: 30
+          });
+        });
+
+        it('changes ARIA attributes', function () {
+          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
+          expect(sliderHandle.attr('aria-valuenow')).toBe('30');
+          expect(sliderHandle.attr('aria-valuetext')).toBe('low');
+        });
+      });
+
+      describe('when the new volume is in ]40,60]', function() {
+        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
+        beforeEach(function() {
+          videoVolumeControl.onChange(void 0, {
+            value: 50
+          });
+        });
+
+        it('changes ARIA attributes', function () {
+          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
+          expect(sliderHandle.attr('aria-valuenow')).toBe('50');
+          expect(sliderHandle.attr('aria-valuetext')).toBe('average');
+        });
+      });
+
+      describe('when the new volume is in ]60,80]', function() {
+        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
+        beforeEach(function() {
+          videoVolumeControl.onChange(void 0, {
+            value: 70
+          });
+        });
+
+        it('changes ARIA attributes', function () {
+          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
+          expect(sliderHandle.attr('aria-valuenow')).toBe('70');
+          expect(sliderHandle.attr('aria-valuetext')).toBe('loud');
+        });
+      });
+
+      describe('when the new volume is in ]80,100[', function() {
+        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
+        beforeEach(function() {
+          videoVolumeControl.onChange(void 0, {
+            value: 90
+          });
+        });
+
+        it('changes ARIA attributes', function () {
+          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
+          expect(sliderHandle.attr('aria-valuenow')).toBe('90');
+          expect(sliderHandle.attr('aria-valuetext')).toBe('very loud');
+        });
+      });
+
+      describe('when the new volume is maximum', function() {
+        var sliderHandle = $('div.volume-slider>a.ui-slider-handle')
+        beforeEach(function() {
+          videoVolumeControl.onChange(void 0, {
+            value: 100
+          });
+        });
+
+        it('changes ARIA attributes', function () {
+          var sliderHandle = $('div.volume-slider>a.ui-slider-handle');
+          expect(sliderHandle.attr('aria-valuenow')).toBe('100');
+          expect(sliderHandle.attr('aria-valuetext')).toBe('maximum');
         });
       });
     });
