@@ -36,8 +36,6 @@ DETACHED_CATEGORIES = ['about', 'static_tab', 'course_info']
 @login_required
 @expect_json
 def xblock_handler(request, tag=None, course_id=None, branch=None, version_guid=None, block=None):
-#     TODO: there is still some lurking bug in deleting an xmoudle in a draft version (when it has never been
-#    made public).
     if request.method == 'DELETE':
         location = BlockUsageLocator(course_id=course_id, branch=branch, version_guid=version_guid, usage_id=block)
         if not has_access(request.user, location):
@@ -45,7 +43,7 @@ def xblock_handler(request, tag=None, course_id=None, branch=None, version_guid=
 
         old_location = loc_mapper().translate_locator_to_location(location)
 
-#        # optional parameter to delete all children (default False)
+        # optional parameter to delete all children (default False)
         delete_children = request.json.get('delete_children', False)
         delete_all_versions = request.json.get('delete_all_versions', False)
 
